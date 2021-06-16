@@ -60,7 +60,7 @@ const times = {
      * @param {*startTime} 开始时间
      * @param {*endTime} 结束时间
      */
-    getFormatTimeCalculate(startTime,endTime){
+    getFormatTimeCalculate(startTime){
         if(
             (typeof startTime === 'number' && !window.isNaN(startTime))
             ||
