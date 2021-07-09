@@ -6,6 +6,10 @@ const routes = [
     {
         path: "/",
         component: () => import("@/pages/Index")
+    },
+    {
+        path: '/drag',
+        component: () => import("@/pages/Drag")
     }
 ]
 
