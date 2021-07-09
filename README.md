@@ -3,22 +3,13 @@
 ## Project setup
 ```
 npm install
-```
 
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### vueDraggable & vue-draggable-resizable搭建自定义拖拽组件
 ```
-npm run build
-```
+npm install vuedraggable --save
 
-### Lints and fixes files
+npm install vue-draggable-resizable --save
 ```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
