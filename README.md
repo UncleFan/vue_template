@@ -13,3 +13,9 @@ npm install vuedraggable --save
 
 npm install vue-draggable-resizable --save
 ```
+
+### echarts引入 搭建自定义拖拽和可缩放图表
+```
+npm install echarts --save
+
+```
