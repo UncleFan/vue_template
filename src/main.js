@@ -11,6 +11,9 @@ import router from './router'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+import Avue from '@smallwei/avue'
+import '@smallwei/avue/lib/index.css'
+
 // let dates = times.formatDateStamp("2021-01-02 10:11:12")
 console.log(document.body.offsetHeight)
 localStorage.setItem('offsetHeight', document.body.offsetHeight)
@@ -20,6 +23,7 @@ Vue.config.productionTip = false
 Vue.prototype.storage = storage
 
 Vue.use(Element)
+Vue.use(Avue)
 
 new Vue({
   render: h => h(App),

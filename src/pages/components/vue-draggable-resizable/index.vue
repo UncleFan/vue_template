@@ -314,7 +314,7 @@ export default {
       }
     },
     // 检查父元素大小
-    checkParentSize () {console.log(this.parent)
+    checkParentSize () {
       if (this.parent) {
         const [newParentWidth, newParentHeight] = this.getParentSize()
 
@@ -568,7 +568,6 @@ export default {
     },
     // 移动
     move (e) {
-      console.log(this.parentHeight)
       if (this.resizing) {
         this.handleMove(e)
       } else if (this.dragging) {

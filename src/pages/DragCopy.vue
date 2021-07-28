@@ -9,6 +9,7 @@
           <div class="charts-col">
             <el-row>
               <draggable
+              :move="onMove"
                 @end="dragend"
                 @choose="onChoose"
                 :options="{
@@ -22,7 +23,6 @@
                     v-for="item in charts"
                     :key="item.id"
                     :id="'charts' + item.id"
-                    :data-type="item.type"
                     class="item forbid"
                   >
                     <div class="charts">
@@ -42,35 +42,13 @@
             :style="{
               height: currentHeight + 'px',
               width: '1000px',
+              height: '600px',
               border: '1px solid red',
               position: 'relative',
               margin: '0 auto',
             }"
           >
-            <!-- <div  v-for="item in cloneCharts"
-              :key="item.id"></div> -->
-            <vue-draggable-resizable
-              v-for="item in cloneCharts"
-              :key="item.id"
-              :id="'vue-draggable-resizable' + item.id"
-              ref="drag"
-              :w="item.w"
-              :h="item.h"
-              :parent="true"
-              :x="item.x"
-              :y="item.y"
-              :min-width="item.minWidth"
-              :min-height="item.minHeight"
-              :max-width="item.maxWidth"
-              :max-height="item.maxHeight"
-              :isConflictCheck="true"
-              :snap="true"
-              :grid="item.grid"
-              style="background-color: rgb(174, 213, 129)"
-              @resizing="resizing"
-              @activated="getCurrentNodes('vue-draggable-resizable' + item.id)"
-            >
-            </vue-draggable-resizable>
+            <echart-draggable-modal v-for="item in cloneCharts" :key="item.id" :datas="item"></echart-draggable-modal>
           </draggable>
         </el-col>
       </el-row>
@@ -81,9 +59,7 @@
 <script>
 /* eslint-disable */
 import draggable from "vuedraggable";
-import VueDraggableResizable from "@/pages/components/vue-draggable-resizable";
-import "vue-draggable-resizable/dist/VueDraggableResizable.css";
-import * as echarts from "echarts";
+import EchartDraggableModal from "@/pages/components/Echart-Draggable-Modal"
 export default {
   data() {
     return {
@@ -94,14 +70,13 @@ export default {
         height: 100,
       },
       charts: [
-        { id: "charts1", name: "charts1", type: "bar" },
-        { id: "charts2", name: "charts2", type: "line" },
+        { id: "charts1", name: "charts1" },
+        { id: "charts2", name: "charts2" },
         { id: "charts3", name: "charts3" },
         { id: "charts4", name: "charts4" },
         { id: "charts5", name: "charts5" },
       ],
       chartsNum: 0,   // 右边echarts的数量
-      chartsType: "",  // 需要渲染出来的图表类型
       picChart: "",
       cloneCharts: [],
       moveId: -1,
@@ -111,7 +86,7 @@ export default {
   },
   components: {
     draggable,
-    VueDraggableResizable,
+    EchartDraggableModal
   },
   computed: {
     // 普通柱状图
@@ -143,35 +118,6 @@ export default {
       };
       return options;
     },
-    // 普通折线图
-    options2(){
-      const options = {
-        title: {
-          text: "普通折线图图", // 主标题
-          left: "30%", // 位置
-          subtext: "百度一下，你就知道", // 副标题
-          sublink: "https://www.baidu.com", // 标题点击后的跳转链接
-        },
-        xAxis: {
-          type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        },
-        yAxis: {
-          type: "value",
-        },
-        series: [
-          {
-            data: [120, 200, 150, 80, 70, 110, 130],
-            type: "line",
-            showBackground: true,
-            backgroundStyle: {
-              color: "rgba(180, 180, 180, 0.2)",
-            },
-          },
-        ],
-      };
-      return options;
-    }
   },
   mounted() {},
   methods: {
@@ -182,45 +128,17 @@ export default {
     },
     // 添加图表
     createBrefCharts() {
-      let options = this.getCurrentOptions()
       const id = this.createRandomId()
-      if (this.cloneCharts.length === 0) {
-        // 第一次生成
-        this.cloneCharts.push({
-          id: 1,
-          w: 400,
-          h: 300,
-          parent: true,
-          x: 0,
-          y: 0,
-          debug: false,
-          minWidth: 200,
-          minHeight: 200,
-          maxWidth: 400,
-          maxHeight: 400,
-          isConflictCheck: true,
-          snap: true,
-          grid: [10, 10],
-        });
-        
-        this.$nextTick(() => {
-          this.renderChart(id, options);
-        });
-        return;
-      }
-      // const charts = this.cloneCharts; // 数组深拷贝
-      // console.log(this.cloneCharts)
       let newIndex = this.cloneCharts.length;
       // 添加新的图标到cloneCharts
       // 判断是水平放置还是垂直放置
-
       this.cloneCharts.push({
-        id: this.cloneCharts[newIndex - 1].id + 1,
+        id: id,
         w: 400,
         h: 300,
         parent: true,
         x: 0,
-        y: 0,
+        y: 200,
         debug: false,
         minWidth: 200,
         minHeight: 200,
@@ -230,10 +148,6 @@ export default {
         snap: true,
         grid: [10, 10],
       });
-      this.$nextTick(() => {
-        this.renderChart(id, options);
-      });
-      this.changeParentsHeight();
     },
 
     // 修改父元素的高度
@@ -248,9 +162,9 @@ export default {
       }
 
       // 更新组件中获取的父元素的高度的值
-      this.$nextTick(() => {
-        this.$refs["drag"].forEach((item) => item.checkParentSize());
-      });
+      // this.$nextTick(() => {
+      //   this.$refs["drag"].forEach((item) => item.checkParentSize());
+      // });
     },
     // 获取最大值
     greater(arr) {
@@ -262,8 +176,8 @@ export default {
 
     // 拖拽结束
     dragend(nodes) {      // 拖拽结束时获取的node节点, id对应图标类型
-      let id = nodes.item.id
-      this.chartsType = nodes.item.dataset.type
+    console.log(nodes)
+      let id = nodes.item.id;
       let target = nodes.originalEvent.path[0].id;
       if (target === "dragbox") {
         this.createBrefCharts();
@@ -303,26 +217,16 @@ export default {
       currentChart.style.height = '300px'
       currentChild.append(currentChart)
       // console.log(childrens[this.chartsNum])
-      const picChart = echarts.init(
-        document.getElementById(chart)
-      );
-      this.picChart = picChart;
-      this.picChart.setOption(options)
+      // const picChart = echarts.init(
+      //   document.getElementById(chart)
+      // );
+      // this.picChart = picChart;
+      // this.picChart.setOption(options)
       this.chartsNum++
     },
 
-    // 需要渲染的图表
-    getCurrentOptions(){
-      let options = ""
-      switch (this.chartsType) {
-        case 'bar':
-          options = this.options1
-          break;
-      
-        default: options = this.options2
-          break;
-      }
-      return options
+    focus(e){
+      console.log(e)
     },
 
     // 生成随机不重复id
