@@ -321,7 +321,7 @@ export default {
       $(".back").css({
         position: "absolute", //绝对地位
         left: "20px", //设置位置
-        top: "20px", //设置位置
+        top: "20px", //设置位置 
         color: "pink", //设置字体颜色
         "font-size": "20px", //设置字体大小
         cursor: "pointer", //变小手

@@ -27,7 +27,7 @@
           <tab-bar style="z-index: 1" @dragend="dragend" ref="tabbar"></tab-bar>
           <div class="content">
             <el-row>
-              <el-col :span="18">
+              <el-col :span="24">
                 <el-card>
                   <draggable
                     class="content-canvas"
@@ -57,23 +57,30 @@
                       :isConflictCheck="true"
                       :snap="true"
                       :grid="item.grid"
-                      style="background-color: rgb(174, 213, 129)"
+                      style="background-color: rgba(174, 213, 129, .5)"
                       @resizing="resizing"
                       @activated="getCurrentNodes(item.chartsId)"
                     >
                       <div :id="item.chartsId" class="chart"></div>
+                      <!-- <span class="el-icon-close" @click="deleteChart"></span> -->
                     </vue-draggable-resizable>
                   </draggable>
                 </el-card>
-              </el-col>
-              <el-col :span="6">
-                form
               </el-col>
             </el-row>
           </div>
         </el-col>
       </el-row>
     </div>
+    <el-drawer
+      title="展示位编辑"
+      :visible.sync="drawer"
+      :with-header="true"
+    >
+      <echart-form-modal>
+
+      </echart-form-modal>
+    </el-drawer>
   </div>
 </template>
 
@@ -82,6 +89,7 @@
 import TabBar from "@/pages/components/Tabs";
 import draggable from "vuedraggable";
 import EchartDraggableModal from "@/pages/components/Echart-Draggable-Modal";
+import EchartFormModal from "@/pages/components/Echart-Form-Modal";
 import VueDraggableResizable from "@/pages/components/vue-draggable-resizable";
 import "vue-draggable-resizable/dist/VueDraggableResizable.css";
 import * as echarts from "echarts";
@@ -95,6 +103,7 @@ export default {
       menu: [{ icon: "el-icon-setting", name: "自定义图表" }],
       cloneCharts: [],
       chartsData: [],
+      drawer: false,
       activeChart: ""  // 被选中的echarts
     };
   },
@@ -103,169 +112,8 @@ export default {
     TabBar,
     EchartDraggableModal,
     draggable,
-    VueDraggableResizable
-  },
-
-  computed: {
-    // 普通柱状图
-    options1() {
-      const options = {
-        title: {
-          text: "普通柱状图", // 主标题
-          left: "30%", // 位置
-          subtext: "百度一下，你就知道", // 副标题
-          sublink: "https://www.baidu.com", // 标题点击后的跳转链接
-        },
-        xAxis: {
-          type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        },
-        yAxis: {
-          type: "value",
-        },
-        series: [
-          {
-            data: [120, 200, 150, 80, 70, 110, 130],
-            type: "bar",
-            showBackground: true,
-            backgroundStyle: {
-              color: "rgba(180, 180, 180, 0.2)",
-            },
-          },
-        ],
-      };
-      return options;
-    },
-    // 复杂柱状图
-    options2() {
-      const option = {
-        tooltip: {
-          show: true, // 显示提示浮框
-          trigger: "item", // 触发条件
-          axisPointer: {
-            type: "shadow",
-            axis: "auto",
-          },
-        },
-        legend: {
-          // 图例组件
-          show: true,
-          type: "plain",
-          orient: "horizontal", // 图例排布
-          data: [
-            "直接访问",
-            "邮件营销",
-            "联盟广告",
-            "视频广告",
-            "搜索引擎",
-            "百度",
-            "谷歌",
-            "必应",
-            "其他",
-          ],
-        },
-        xAxis: [
-          {
-            type: "category",
-            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-          },
-        ],
-        yAxis: [
-          {
-            type: "value",
-          },
-        ],
-        series: [
-          {
-            name: "直接访问",
-            type: "line",
-            emphasis: {
-              focus: "series",
-            },
-            data: [320, 332, 301, 334, 390, 330, 320],
-          },
-          {
-            name: "邮件营销",
-            type: "line",
-            stack: "广告",
-            emphasis: {
-              focus: "series",
-            },
-            data: [120, 132, 101, 134, 90, 230, 210],
-          },
-          {
-            name: "联盟广告",
-            type: "line",
-            stack: "广告",
-            emphasis: {
-              focus: "series",
-            },
-            data: [220, 182, 191, 234, 290, 330, 310],
-          },
-          {
-            name: "视频广告",
-            type: "line",
-            stack: "广告",
-            emphasis: {
-              focus: "series",
-            },
-            data: [150, 232, 201, 154, 190, 330, 410],
-          },
-          {
-            name: "搜索引擎",
-            type: "bar",
-            data: [862, 1018, 964, 1026, 1679, 1600, 1570],
-            emphasis: {
-              focus: "series",
-            },
-            markLine: {
-              lineStyle: {
-                type: "dashed",
-              },
-              data: [[{ type: "min" }, { type: "max" }]],
-            },
-          },
-          {
-            name: "百度",
-            type: "bar",
-            barWidth: 5,
-            stack: "搜索引擎",
-            emphasis: {
-              focus: "series",
-            },
-            data: [620, 732, 701, 734, 1090, 1130, 1120],
-          },
-          {
-            name: "谷歌",
-            type: "bar",
-            stack: "搜索引擎",
-            emphasis: {
-              focus: "series",
-            },
-            data: [120, 132, 101, 134, 290, 230, 220],
-          },
-          {
-            name: "必应",
-            type: "bar",
-            stack: "搜索引擎",
-            emphasis: {
-              focus: "series",
-            },
-            data: [60, 72, 71, 74, 190, 130, 110],
-          },
-          {
-            name: "其他",
-            type: "bar",
-            stack: "搜索引擎",
-            emphasis: {
-              focus: "series",
-            },
-            data: [62, 82, 91, 84, 109, 110, 120],
-          },
-        ],
-      };
-      return option;
-    },
+    VueDraggableResizable,
+    EchartFormModal
   },
 
   mounted() {
@@ -289,7 +137,6 @@ export default {
     handleClose() {},
     
     dragend(nodes){
-      console.log(nodes)
       const chartsId = this.createRandomId()
       const chartsType = nodes.item.dataset.type
       let target = nodes.originalEvent.path[0].id;
@@ -320,10 +167,8 @@ export default {
         grid: [10, 10],
       }, currentChart[0])
       this.cloneCharts.push(options)
-      console.log(this.cloneCharts)
       this.$nextTick(() => {
         const dom = echarts.init(document.getElementById(chartsId))
-        console.log(currentChart[0])
         dom.setOption(currentChart[0])
       })
     },
@@ -350,9 +195,15 @@ export default {
       currentChart.resize();
     }, 30),
 
+    // 删除echarts
+    deleteChart(){
+      console.log('deldete')
+    },
+
     //
     getCurrentNodes(id){
       this.activeChart = id
+      this.drawer = true
     },
 
     onChoose(){}
@@ -394,5 +245,11 @@ export default {
 .flex {
   display: flex;
   justify-content: space-around;
+}
+.el-icon-close{
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
 }
 </style>
