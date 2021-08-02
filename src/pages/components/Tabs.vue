@@ -9,6 +9,7 @@
     <el-collapse-transition>
       <div class="tab-content" v-show="show">
         <draggable
+        v-if="showMap === false"
           @end="dragend"
           @choose="onChoose"
           :options="{
@@ -19,6 +20,27 @@
           <transition-group>
             <div
               v-for="item in tabContent"
+              :key="item.id"
+              :data-type="item.id"
+              class="item forbid"
+            >
+              <img :src="item.icon" class="icon" />
+              <span class="text">{{ item.name }}</span>
+            </div>
+          </transition-group>
+        </draggable>
+        <draggable
+          v-else
+          @end="dragend"
+          @choose="onChoose"
+          :options="{
+            group: { name: 'itxst', pull: 'clone' },
+            sort: false,
+          }"
+        >
+          <transition-group>
+            <div
+              v-for="item in maps"
               :key="item.id"
               :data-type="item.id"
               class="item forbid"
@@ -40,6 +62,7 @@ export default {
   data() {
     return {
       show: false,
+      showMap: false,
       tabs: [
         {
           type: "map",
@@ -69,11 +92,19 @@ export default {
       ],
       // tab详情
       tabContent: [
-        { name: "中国地图", icon: require("@/assets/china.png"), id: "1" },
-        { name: "黑龙江省", icon: require("@/assets/china.png"), id: "2" },
-        { name: "湖南省", icon: require("@/assets/china.png"), id: "3" },
-        { name: "吉林省", icon: require("@/assets/china.png"), id: "4" },
+        { name: "折线图", icon: require("@/assets/zhexiantu.png"), id: "1" },
+        { name: "柱状图", icon: require("@/assets/zhuzhuangtu.png"), id: "2" },
+        { name: "散点图", icon: require("@/assets/sandiantu.png"), id: "3" },
+        { name: "饼图", icon: require("@/assets/bingtu.png"), id: "4" },
       ],
+      // 地图tab
+      maps: [
+        { name: "中国地图", icon: require("@/assets/china.png"), id: "map-china" },
+        { name: "湖南省", icon: require("@/assets/hunan.png"), id: "map-hunan" },
+        { name: "广东省", icon: require("@/assets/guangdong.png"), id: "map-guangdong" },
+        { name: "山东省", icon: require("@/assets/shandong.png"), id: "map-shandong" },
+        { name: "福建省", icon: require("@/assets/fujian.png"), id: "map-fujian" }
+      ]
     };
   },
 
@@ -89,10 +120,14 @@ export default {
         this.show = false
     },
     setActiveTabs(item){
+      this.showMap = false
       this.tabs.forEach(o => {
         o.active = false
         if(o.name === item.name){
           o.active = true
+          if(o.type === "map"){
+            this.showMap = true
+          }
         }
       })
     },

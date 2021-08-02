@@ -15,12 +15,12 @@ import Avue from '@smallwei/avue'
 import '@smallwei/avue/lib/index.css'
 
 // let dates = times.formatDateStamp("2021-01-02 10:11:12")
-console.log(document.body.offsetHeight)
 localStorage.setItem('offsetHeight', document.body.offsetHeight)
 
 Vue.config.productionTip = false
 
 Vue.prototype.storage = storage
+// Vue.prototype.$request = request
 
 Vue.use(Element)
 Vue.use(Avue)
