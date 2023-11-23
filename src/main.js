@@ -13,6 +13,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import Avue from '@smallwei/avue'
 import '@smallwei/avue/lib/index.css'
+import '@/assets/index.js'
 
 // let dates = times.formatDateStamp("2021-01-02 10:11:12")
 localStorage.setItem('offsetHeight', document.body.offsetHeight)
