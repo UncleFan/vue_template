@@ -19,3 +19,15 @@ npm install vue-draggable-resizable --save
 npm install echarts --save
 
 ```
+
+### Three.js引入 加载PCD模型
+```
+npm install three --save
+
+1. 引入THREE
+2. 引入PCDLoader
+3. 加载模型
+4. 控制模型
+5. 实现场景内部鼠标控制画立方体，实现pcd模型的标注
+
+```
