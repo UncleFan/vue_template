@@ -302,24 +302,26 @@ export default {
     this.threePlus = new Lesson1(_three, {
       x: 0,
       y: 0,
-      z: 100,
+      z: 10,
     });
     this.topPlus = new Lesson1(_top, {
       x: 0,
       y: 0,
-      z: 100,
+      z: 10,
     });
     this.leftPlus = new Lesson1(_left, {
-      x: -100,
-      y: 100,
+      x: -10,
+      y: 10,
       z: 0,
     });
     this.rightPlus = new Lesson1(_right, {
-      x: 100,
+      x: 10,
       y: 0,
       z: 0,
     });
-    this.threePlus.init("Zaghetto.pcd");
+    
+    this.threePlus.init("tanwaylidar_pointcloud.pcd");
+    // this.threePlus.init("Zaghetto.pcd");
     this.topPlus.init("Zaghetto.pcd");
     this.leftPlus.init("Zaghetto.pcd");
     this.rightPlus.init("Zaghetto.pcd");
