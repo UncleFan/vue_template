@@ -85,8 +85,8 @@ export default class Lesson1 {
   }
   // 初始化鼠标事件
   initMouseEvent() {
-    this.htmlElement.addEventListener("click", this.handlerClickEvent.bind(this));
-    this.htmlElement.addEventListener("mousemove", this.handlerMoveEvent.bind(this));
+    this.htmlElement.addEventListener("click", this.handlerClickEvent.bind(this), { passive: false });
+    this.htmlElement.addEventListener("mousemove", this.handlerMoveEvent.bind(this), { passive: false });
   }
   handlerClickEvent(event) {
     console.log('点击');
